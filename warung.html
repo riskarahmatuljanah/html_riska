@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table, td {
+    border: 1px solid black;
+}
+</style>
+</head>
+<body>
+    <h1>NGITUNG YUK</h1>
+    <div>
+        <p>Nama Barang :
+            <select id="barang">
+                <option value="Kopi">Kopi</option>
+                <option value="Susu">Susu</option>
+                <option value="Handuk">Handuk</option>
+                <option value="Baju">Baju</option>
+            </select>
+        </p>
+    </div> 
+    <div>
+        <p>Jumlah Barang :
+        <input type ="number" id="num1"/></p>
+    </div>    
+    <div>
+        <p>Harga Barang :
+        <input type ="number" id="num2"/></p>
+    </div>    
+        <br>
+    <br>
+
+<table id="myThead">
+<thead>
+    <tr>
+    <td>No.</td>
+    <td>Nama Barang</td>
+    <td>Jumlah Barang</td>
+    <td>Harga Barang</td>
+    <td>Jumlah Total</td>
+    <td>Discon</td>
+    <td>Aksi</td>
+    </tr>
+</thead>
+<tbody id="myTbody">
+  
+</tbody>
+
+<tfoot>
+    <td colspan="2">Jumlah barang</td>
+        <td id ="tf"></td> <!--barag-->
+        <td>total bayar</td>
+        <td id="th"></td> <!--harga-->
+        <td>Total Discon</td>
+        <td id="td"></td> <!--dis-->
+        <td>Setelah Discon</td>
+        <td id="sd"></td>
+                   
+</tfoot>
+</table>
+<br>
+
+<button onclick="myCreateFunction()">Create row</button>
+
+<script>
+function myCreateFunction() {
+    var barang = document.getElementById("barang").value; //jenis barang
+    var aa = document.getElementById("num1").value; //jumlah barang
+    var bb = document.getElementById("num2").value; //harga
+    var result = parseFloat(aa) * parseFloat(bb); 
+    
+    //discon
+    var discon =0;
+        if (aa > 5) {
+            discon = result * 0.10;
+        }
+
+    
+    var tambah = document.getElementById("myTbody").rows.length;
+    var a= tambah+1;
+
+    var table = document.getElementById("myTbody");
+
+    var row = table.insertRow(tambah);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var cell3 = row.insertCell(2);
+    var cell4 = row.insertCell(3);
+    var cell5 = row.insertCell(4);
+    var cell6 = row.insertCell(5);
+    var cell7 = row.insertCell();
+
+    cell1.innerHTML = a;
+    cell2.innerHTML = barang;
+    cell3.innerHTML = aa;
+    cell4.innerHTML = bb;
+    cell5.innerHTML = result;
+    cell6.innerHTML = discon;
+    cell7.innerHTML = '<input type="button" value="Delete" onclick="deleteRow(this)">';
+    
+    hitung(callbackAdd);
+
+        
+        
+
+}
+
+function deleteRow(r) {
+    var i = r.parentNode.parentNode.rowIndex;
+    document.getElementById("myThead").deleteRow(i);
+
+    hitung(callbackDelete);
+}
+
+function callbackAdd() {
+    alert("data berhasil ditambah");
+}
+
+function callbackDelete() {
+    alert("data berhasail dihapus");
+}
+
+function hitung(call) {
+    var table= document.getElementById("myTbody");
+
+    var sum=0;
+    var total=0;
+    var totalDiscon=0;
+
+        for (var i=0; i<table.rows.length; i++) {
+
+            //total barang
+            var row = table.rows[i]; //variable baru untuk ambil rows
+            var celljumlahbarang = row.cells[2]; //var baru buat jumlah barang dengan cell  ke 2(jumlah barang)
+            sum += parseInt(celljumlahbarang.innerHTML); //menjumlahkan sum (ambil jumlah barang)
+            console.log(celljumlahbarang);
+            console.log(celljumlahbarang.innerHTML);
+            
+            //total bayar
+            var harga = row.cells[4]; //var baru dengan nama harga u/ diletakan pada row ke 4
+            total+= parseInt(harga.innerHTML); //menjumlahkan total (ambil harga)
+
+            //discon
+            var rowD = table.rows[i];
+            var cellDiscon = row.cells[5];
+            totalDiscon += parseInt(cellDiscon.innerHTML);
+            
+        }
+        
+
+        var z = document.getElementById("th").innerHTML = total; //total bayar
+
+        var y = document.getElementById("tf").innerHTML = sum; //total barang
+        console.log(sum);
+
+        var v = document.getElementById("td").innerHTML = totalDiscon; //variabel buat nampung total Discon
+        
+
+        var r = document.getElementById("sd").innerHTML = total -totalDiscon; //setelah discon
+
+        call();
+}
+
+
+
+</script>
+
+</body>
+</html>
